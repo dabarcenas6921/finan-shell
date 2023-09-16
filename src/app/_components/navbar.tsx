@@ -1,66 +1,10 @@
 import { SignedIn, SignedOut, SignUpButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
-const lessons = [
-  { href: "/lessons/banking-safety", text: "Digital Banking Safety" },
-  {
-    href: "/lessons/budgeting-and-expense-tracking",
-    text: "Budgeting and Expense Tracking",
-  },
-  { href: "/lessons/banking-basics", text: "Banking Basics" },
-  { href: "/lessons/investment-fundamentals", text: "Investment Fundamentals" },
-  { href: "/lessons/retirement-planning", text: "Retirement Planning" },
-  {
-    href: "/lessons/financial-goals-and-planning",
-    text: "Financial Goals and Planning",
-  },
-  { href: "/lessons/credit-building", text: "Credit Building Tips and Tricks" },
-  { href: "/lessons/digital-banking-safety", text: "Digital Banking Safety" }, // Note: I changed the last link to avoid duplication
-];
-
-const lessonItems = lessons.map((lesson, index) => (
-  <li key={index}>
-    <Link href={lesson.href}>{lesson.text}</Link>
-  </li>
-));
-
 export default function Navbar() {
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <Link href="/dashboard">Dashboard</Link>
-            </li>
-            <li>
-              <a>Financial Literacy</a>
-              <ul className="p-2">{lessonItems}</ul>
-            </li>
-            <li>
-              <Link href="/hub">Community Hub</Link>
-            </li>
-          </ul>
-        </div>
         <a className="btn btn-ghost text-xl normal-case">FinanShell</a>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -68,11 +12,8 @@ export default function Navbar() {
           <li>
             <Link href="/dashboard">Dashboard</Link>
           </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Financial Literacy</summary>
-              <ul className="p-2">{lessonItems}</ul>
-            </details>
+          <li>
+            <Link href="/lessons">Financial Literacy</Link>
           </li>
           <li>
             <Link href="/hub">Community Hub</Link>

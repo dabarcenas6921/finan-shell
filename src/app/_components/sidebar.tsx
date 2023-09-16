@@ -1,6 +1,6 @@
 import Link from "next/link";
 import LessonContent from "./lessonContent";
-import { ModuleData } from "./lessonContent";
+import type { ModuleData } from "./lessonContent";
 
 const lessonsWithCategories = [
   {
@@ -74,7 +74,7 @@ export default function Sidebar({
       </div>
       <div className="drawer-side">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+        <ul className="menu min-h-full w-80 bg-base-200 p-4 text-base-content">
           {lessonsWithCategories.map((categoryItem, index) => (
             <div key={index}>
               <h2 className="mb-2 text-lg font-semibold">

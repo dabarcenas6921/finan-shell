@@ -8,7 +8,7 @@ export default function retirementPlanning() {
   );
 }
 
-let content = {
+const content = {
   heading: "Retirement Planning",
   subcontent: [
     {

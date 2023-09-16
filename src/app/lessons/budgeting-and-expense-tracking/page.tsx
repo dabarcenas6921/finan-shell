@@ -4,7 +4,7 @@ export default function BudgetingAndExpenseTracking() {
   return <div>{<Sidebar moduleContent={content} />}</div>;
 }
 
-let content = {
+const content = {
   heading: "Budgeting and Expense Tracking",
   subcontent: [
     {

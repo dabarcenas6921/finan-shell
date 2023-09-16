@@ -1,3 +1,3 @@
 export default function Lessons() {
-  return <></>;
+  return <><div></div></>;
 }

@@ -1,6 +1,29 @@
 import { SignedIn, SignedOut, SignUpButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
+const lessons = [
+  { href: "/lessons/banking-safety", text: "Digital Banking Safety" },
+  {
+    href: "/lessons/budgeting-and-expense-tracking",
+    text: "Budgeting and Expense Tracking",
+  },
+  { href: "/lessons/banking-basics", text: "Banking Basics" },
+  { href: "/lessons/investment-fundamentals", text: "Investment Fundamentals" },
+  { href: "/lessons/retirement-planning", text: "Retirement Planning" },
+  {
+    href: "/lessons/financial-goals-and-planning",
+    text: "Financial Goals and Planning",
+  },
+  { href: "/lessons/credit-building", text: "Credit Building Tips and Tricks" },
+  { href: "/lessons/digital-banking-safety", text: "Digital Banking Safety" }, // Note: I changed the last link to avoid duplication
+];
+
+const lessonItems = lessons.map((lesson, index) => (
+  <li key={index}>
+    <Link href={lesson.href}>{lesson.text}</Link>
+  </li>
+));
+
 export default function Navbar() {
   return (
     <div className="navbar bg-base-100">
@@ -31,18 +54,7 @@ export default function Navbar() {
             </li>
             <li>
               <a>Financial Literacy</a>
-              <ul className="p-2">
-                <li>
-                  <Link href="/lessons/credit-building">
-                    Credit Building Tips and Tricks
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/lessons/banking-safety">
-                    Digital Banking Safety
-                  </Link>
-                </li>
-              </ul>
+              <ul className="p-2">{lessonItems}</ul>
             </li>
             <li>
               <Link href="/hub">Community Hub</Link>
@@ -59,18 +71,7 @@ export default function Navbar() {
           <li tabIndex={0}>
             <details>
               <summary>Financial Literacy</summary>
-              <ul className="p-2">
-                <li>
-                  <Link href="/lessons/credit-building">
-                    Credit Building Tips and Tricks
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/lessons/banking-safety">
-                    Digital Banking Safety
-                  </Link>
-                </li>
-              </ul>
+              <ul className="p-2">{lessonItems}</ul>
             </details>
           </li>
           <li>

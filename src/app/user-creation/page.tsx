@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 
-export default function Page() {
-    const createUser = api.user.create.query();
+export default async function Page() {
+    const createUser = await api.user.create.query();
     console.log(createUser);
     <div></div>
   }

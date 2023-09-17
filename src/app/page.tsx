@@ -4,11 +4,9 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="flex h-screen -translate-y-16 transform items-center justify-center">
-      {" "}
-      {/* Added transform and translate utilities */}
+    <div className="flex h-screen -translate-y-16 transform flex-col items-center justify-center md:flex-row">
       {/* Left Column: Text */}
-      <div className="mx-8 w-1/2 text-center">
+      <div className="mx-8 mb-8 w-full text-center md:mb-0 md:w-1/2">
         <h1
           className="leading-tighter mb-4 text-4xl font-extrabold tracking-tighter text-white md:text-7xl"
           data-aos="zoom-y-out"
@@ -34,16 +32,16 @@ export default function Page() {
             data-aos="zoom-y-out"
             data-aos-delay="300"
           >
-            <div>
+            <div className="mb-4 sm:mb-0">
               <Link href="/sign-up">
-                <button className="btn btn-primary mb-4 w-full text-white hover:bg-blue-700 sm:mb-0 sm:w-auto">
+                <button className="btn btn-primary w-full text-white hover:bg-blue-700">
                   Register
                 </button>
               </Link>
             </div>
-            <div>
+            <div className="mt-4 sm:ml-4 sm:mt-0">
               <Link href="/sign-in">
-                <button className="btn btn-secondary w-full text-white hover:bg-gray-800 sm:ml-4 sm:w-auto">
+                <button className="btn btn-secondary w-full text-white hover:bg-gray-800">
                   Login
                 </button>
               </Link>
@@ -51,9 +49,10 @@ export default function Page() {
           </div>
         </div>
       </div>
+
       {/* Right Column: Spline Object */}
-      <div className="flex w-1/2 items-center justify-center">
-        <div className="h-screen w-screen">
+      <div className="flex h-[300px] w-full items-center justify-center md:h-auto md:w-1/2">
+        <div className="h-full w-full">
           <Spline scene="https://prod.spline.design/tGhfhJAi87C1Sz5s/scene.splinecode" />
         </div>
       </div>

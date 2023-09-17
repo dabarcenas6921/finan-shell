@@ -14,7 +14,7 @@ export default function ArticleCard({
   altText = "",
 }: ArticleCardProps) {
   return (
-    <div className="bordered card bg-[#374151] p-6 shadow-md dark:bg-gray-800 dark:text-gray-100">
+    <div className="bordered card bg-[#374151] p-6 shadow-md dark:bg-gray-600 text-black">
       <figure>
         <img src={imageUrl} alt={altText} />
       </figure>

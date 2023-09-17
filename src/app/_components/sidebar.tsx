@@ -74,7 +74,7 @@ export default function Sidebar({
       </div>
       <div className="drawer-side">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-        <ul className="menu min-h-full w-80 bg-base-200 p-4 text-base-content">
+        <ul className="menu min-h-full w-80 bg-base-300 p-4 text-base-content">
           {lessonsWithCategories.map((categoryItem, index) => (
             <div key={index}>
               <h2 className="mb-2 text-lg font-semibold">

@@ -17,11 +17,11 @@ export default function LessonContent({ moduleData }: LessonContentProps) {
   return (
     <div className="mb-5">
       <article className="prose">
-        <h1>{moduleData.heading}</h1>
+        <h1 className="text-black">{moduleData.heading}</h1>
         {moduleData.subcontent.map((subitem, index) => (
           <div key={index}>
-            <h2>{subitem.subheading}</h2>
-            <p className="w-full">{subitem.paragraph}</p>
+            <h2 className="text-black">{subitem.subheading}</h2>
+            <p className="w-full text-black">{subitem.paragraph}</p>
           </div>
         ))}
         <div>

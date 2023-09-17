@@ -56,7 +56,7 @@ export default function LessonDefault() {
     );
 
   return (
-    <div className="mt-2 flex flex-col items-center space-y-4">
+    <div className="mt-24 flex flex-col items-center justify-center space-y-4">
       <article className="prose text-center">
         <h1>Modules</h1>
         <h3>Delve into our comprehensive financial literacy modules</h3>

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="flex h-screen -translate-y-16 transform flex-col items-center justify-center md:flex-row">
+    <div className="relative bottom-8 flex h-screen flex-col items-center justify-center md:flex-row">
       {/* Left Column: Text */}
       <div className="mx-8 mb-8 w-full text-center md:mb-0 md:w-1/2">
         <h1

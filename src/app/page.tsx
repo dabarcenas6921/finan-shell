@@ -8,7 +8,7 @@ export default function Page() {
       {/* Left Column: Text */}
       <div className="mx-8 mb-8 w-full text-center md:mb-0 md:w-1/2">
         <h1
-          className="leading-tighter mb-4 text-4xl font-extrabold tracking-tighter text-white md:text-7xl"
+          className="leading-tighter mb-4 text-4xl font-extrabold tracking-tighter text-black md:text-7xl"
           data-aos="zoom-y-out"
         >
           Unlock your financial{" "}
@@ -19,7 +19,7 @@ export default function Page() {
 
         <div className="mx-auto max-w-3xl">
           <p
-            className="mb-8 text-xl text-gray-400"
+            className="mb-8 text-xl text-gray-800"
             data-aos="zoom-y-out"
             data-aos-delay="150"
           >

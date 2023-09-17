@@ -72,5 +72,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
-} satisfies Config;
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/forms"), require("daisyui")],
+}

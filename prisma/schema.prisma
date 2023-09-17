@@ -21,7 +21,13 @@ model User {
     id        String      @id
     name      String?
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    budget String? 
+    budgetAmount String?
+    dateTo DateTime? @default(now())
+    dateFrom DateTime? @default(now())
+    demographic String? 
+    goals String?
+    salary String?
 
     @@index([id])
 }

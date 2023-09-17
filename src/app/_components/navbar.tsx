@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <div className="navbar sticky bg-base-100">
+    <div className="navbar sticky bg-white">
       <div className="navbar-start">
         <a className="btn btn-ghost text-xl normal-case">FinanShell</a>
       </div>
@@ -18,6 +18,9 @@ export default function Navbar() {
           <li>
             <Link href="/hub">Community Hub</Link>
           </li>
+          <li>
+              <Link href="/account-setup">Account Setup</Link>
+            </li>
         </ul>
       </div>
       <div className="navbar-end mr-2">

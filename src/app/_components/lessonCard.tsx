@@ -8,7 +8,7 @@ interface LessonProps {
 
 const LessonCard: React.FC<LessonProps> = ({ href, text, description }) => (
   <Link href={href}>
-    <div className="flex cursor-pointer items-center space-x-4 rounded p-2 hover:bg-gray-700">
+    <div className="flex cursor-pointer items-center space-x-4 rounded p-2 hover:bg-gray-200">
       <div className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 p-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"

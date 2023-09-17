@@ -65,12 +65,12 @@ export default function LessonDefault() {
         <input
           type="text"
           placeholder="Search..."
-          className="input input-bordered w-full max-w-xs"
+          className="input input-bordered w-full max-w-xs bg-white"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
-          className="select select-bordered w-full max-w-xs"
+  className="select select-bordered w-full max-w-xs bg-white"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >

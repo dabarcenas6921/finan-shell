@@ -1,7 +1,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type NextRequest } from "next/server";
 import superjson from "superjson";
-import { ZodError } from "zod";
+import { optional, ZodError } from "zod";
 import { getAuth } from "@clerk/nextjs/server";
 import type {
   SignedInAuthObject,
@@ -9,19 +9,24 @@ import type {
 } from "@clerk/nextjs/api";
 import { db } from "~/server/db";
 
-interface AuthContext {
+interface CreateContextOptions {
+  headers: Headers;
   auth: SignedInAuthObject | SignedOutAuthObject;
 }
 
-export const createInnerTRPCContext = ({ auth }: AuthContext) => {
+export const createInnerTRPCContext = (opts: CreateContextOptions ) => {
   return {
-    auth,
+    headers: opts.headers,
+    auth: opts.auth,
     db,
   };
 };
 
 export const createTRPCContext = (opts: { req: NextRequest }) => {
-  return createInnerTRPCContext({ auth: getAuth(opts.req) });
+  return createInnerTRPCContext({
+    headers: opts.req.headers,
+    auth: getAuth(opts.req),
+  });
 };
 
 const t = initTRPC.context<typeof createTRPCContext>().create({

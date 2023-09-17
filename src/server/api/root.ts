@@ -1,6 +1,7 @@
 import { postRouter } from "~/server/api/routers/post";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { userRouter } from "~/server/api/routers/user";
+import "server-only";
 
 export const appRouter = createTRPCRouter({
   post: postRouter,

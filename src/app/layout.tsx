@@ -1,16 +1,10 @@
 import "~/styles/globals.css";
-
-import { Inter } from "next/font/google";
+import { QuickstartProvider } from "./_components/PlaidProvider";
 import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "./_components/navbar";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export const metadata = {
   title: "Create T3 App",
@@ -25,10 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`font-sans ${inter.variable}`}>
-          <Navbar />
-          <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
+        <html className="h-full bg-white">
+        <body className='h-full'>
+          <TRPCReactProvider headers={headers()} >
+            <QuickstartProvider>
+            <Navbar/>
+            {children}
+            </QuickstartProvider>
+          </TRPCReactProvider>
         </body>
       </html>
     </ClerkProvider>

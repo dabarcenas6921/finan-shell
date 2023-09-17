@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { clerkClient } from "@clerk/nextjs/server";
 
 import { createTRPCRouter, publicProcedure} from "~/server/api/trpc";
 

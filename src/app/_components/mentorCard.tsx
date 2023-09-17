@@ -13,7 +13,7 @@ export default function MentorCard({
   const reviews = Math.floor(Math.random() * 101);
 
   return (
-    <div className="flex max-w-xs flex-col justify-center rounded-xl bg-[#374151] p-6 shadow-md dark:bg-gray-800 dark:text-gray-100 sm:px-12">
+    <div className="flex  flex-col justify-center rounded-xl bg-[#374151] p-6 shadow-md dark:bg-gray-800 dark:text-gray-100 sm:px-12">
       <img
         src={profileImage}
         alt={name}

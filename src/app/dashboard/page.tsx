@@ -1,5 +1,4 @@
 "use client"
-import { Metadata } from "next"
 import { useState, useEffect } from 'react'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
 import { Button } from "~/app/@components/ui/button"
@@ -24,10 +23,6 @@ import TeamSwitcher from "~/app/_components/dashboard/team-switcher"
 import { UserNav } from "~/app/_components/dashboard/user-nav"
 import { useUser } from "@clerk/nextjs";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
-}
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();

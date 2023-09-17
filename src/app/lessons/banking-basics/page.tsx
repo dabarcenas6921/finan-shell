@@ -8,7 +8,7 @@ export default function BankingBasics() {
   );
 }
 
-let content = {
+const content = {
   heading: "Banking Basics",
   subcontent: [
     {

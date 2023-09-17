@@ -8,7 +8,7 @@ export default function financialGoals() {
   );
 }
 
-let content = {
+const content = {
   heading: "Financial Goals and Planning",
   subcontent: [
     {

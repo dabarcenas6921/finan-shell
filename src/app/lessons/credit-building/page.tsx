@@ -4,7 +4,7 @@ export default function creditBuilding() {
   return <div>{<Sidebar moduleContent={content} />}</div>;
 }
 
-let content = {
+const content = {
   heading: "Credit Building Tips and Tricks",
   subcontent: [
     {

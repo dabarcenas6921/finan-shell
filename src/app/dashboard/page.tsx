@@ -30,11 +30,24 @@ import { headers } from "next/headers";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [publicToken, setPublicToken] = useState<string | null>(null);
+  const [linkToken, setLinkToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string>();
+  const [publicToken, setPublicToken] = useState<string>();
+
   const linkTokenMutation = api.plaid.create_link_token.useMutation({
     onSuccess: (data) => {
       // Set the public token once the mutation is successful
-      setPublicToken(data.link_token);
+      setLinkToken(data.link_token);
+    },
+    onError: (error) => {
+      console.error("Error creating link token:", error);
+    },
+  });
+
+  const accessTokenMutation = api.plaid.exchange_public_token.useMutation({
+    onSuccess: (data) => {
+      // Set the public token once the mutation is successful
+      console.log("accessToken:", data.accessToken);
     },
     onError: (error) => {
       console.error("Error creating link token:", error);
@@ -42,9 +55,11 @@ export default function Page() {
   });
 
   const { open, ready } = usePlaidLink({
-    token: publicToken,
+    token: linkToken,
     onSuccess: (public_token, metadata) => {
       // send public_token to server
+      setPublicToken(public_token);
+      accessTokenMutation.mutate({ public_token: public_token });
     },
   });
 
@@ -97,7 +112,11 @@ export default function Page() {
               <h3 className="text-2x tracking-tight">
                 Take a look at your finan-shells 🐚.
               </h3>
-              <button onClick={() => open()} disabled={!ready}>
+              <button
+                className="bg-black text-white"
+                onClick={() => open()}
+                disabled={!ready}
+              >
                 Connect a bank account
               </button>
             </div>

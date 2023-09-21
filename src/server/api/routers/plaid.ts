@@ -43,6 +43,27 @@ export const plaidRouter = createTRPCRouter({
         });
       }
     }),
+
+  exchange_public_token: publicProcedure
+    .input(z.object({ public_token: z.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { public_token } = input;
+        const response = await plaidClient.itemPublicTokenExchange({
+          public_token,
+        });
+
+        const accessToken = response.data.access_token;
+
+        //Store the token in the users table
+        return { accessToken };
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to exchange public token for access token",
+        });
+      }
+    }),
 });
 
 export type AppRouter = typeof plaidRouter;

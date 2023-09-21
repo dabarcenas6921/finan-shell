@@ -1,50 +1,81 @@
-"use client"
-import { useState, useEffect } from 'react'
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
-import { Button } from "~/app/@components/ui/button"
+"use client";
+import { useState, useEffect } from "react";
+import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
+import { Button } from "~/app/@components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "~/app/@components/ui/card"
+} from "~/app/@components/ui/card";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "~/app/@components/ui/tabs"
-import { CalendarDateRangePicker } from "~/app/_components/dashboard/date-range-picker"
-import { MainNav } from "~/app/_components/dashboard/main-nav"
-import { Overview } from "~/app/_components/dashboard/overview"
-import { RecentTransactions } from "~/app/_components/dashboard/recent-transactions"
-import TeamSwitcher from "~/app/_components/dashboard/team-switcher"
-import { UserNav } from "~/app/_components/dashboard/user-nav"
+} from "~/app/@components/ui/tabs";
+import { CalendarDateRangePicker } from "~/app/_components/dashboard/date-range-picker";
+import { MainNav } from "~/app/_components/dashboard/main-nav";
+import { Overview } from "~/app/_components/dashboard/overview";
+import { RecentTransactions } from "~/app/_components/dashboard/recent-transactions";
+import TeamSwitcher from "~/app/_components/dashboard/team-switcher";
+import { UserNav } from "~/app/_components/dashboard/user-nav";
 import { useUser } from "@clerk/nextjs";
+import { AppRouter } from "~/server/api/root";
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import SuperJSON from "superjson";
+import { Products, CountryCode } from "plaid";
 
+const trpc = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: "http://localhost:3000/api/trpc",
+    }),
+  ],
+  transformer: SuperJSON,
+});
+
+async function createLinkToken() {
+  const NewRequest = {
+    user: {
+      client_user_id: "user",
+    },
+    client_name: "FinanShell",
+    products: [Products.Auth], // Use the Products enum
+    language: "en",
+    redirect_uri: "http://localhost:3000/",
+    country_codes: [CountryCode.Us], // Use the CountryCode enum
+  };
+
+  try {
+    const response = await trpc.plaid.create_link_token.mutate(NewRequest);
+    console.log("Link token response:", response);
+  } catch (error) {
+    console.error("Error creating link token:", error);
+  }
+}
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const balance = {
-    change: "increase"
-  }
+    change: "increase",
+  };
 
   function classNames(...classes: any) {
-    return classes.filter(Boolean).join(' ')
+    return classes.filter(Boolean).join(" ");
   }
 
-  
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-  if (!mounted) return null
-
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    createLinkToken();
+  }, []);
+  if (!mounted) return null;
 
   return (
-  
     <>
-      <div className="md:hidden" suppressHydrationWarning >
-      </div>
+      <div className="md:hidden" suppressHydrationWarning></div>
       <div className="hidden flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
@@ -58,22 +89,20 @@ export default function Page() {
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
             <div className="flex flex-col">
-            <h2 className="text-3xl font-bold tracking-tight">Welcome, {user?.firstName}!</h2>
-            <h3 className="text-2x tracking-tight">Take a look at your finan-shells 🐚.</h3>
+              <h2 className="text-3xl font-bold tracking-tight">
+                Welcome, {user?.firstName}!
+              </h2>
+              <h3 className="text-2x tracking-tight">
+                Take a look at your finan-shells 🐚.
+              </h3>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="budgets">
-                Budgets
-              </TabsTrigger>
-              <TabsTrigger value="transactions">
-                Transactions
-              </TabsTrigger>
-              <TabsTrigger value="credit" >
-                Credit
-              </TabsTrigger>
+              <TabsTrigger value="budgets">Budgets</TabsTrigger>
+              <TabsTrigger value="transactions">Transactions</TabsTrigger>
+              <TabsTrigger value="credit">Credit</TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -98,16 +127,20 @@ export default function Page() {
                   <CardContent>
                     <div className="text-2xl font-bold">$45,231.89</div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                    <div className={classNames(
-                      balance.change === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
-                      'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0'
-                    )}>   
-                      <ArrowUpIcon
-                      className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
-                      aria-hidden="true"
-                      />
-                      +20.1% from last month
-                    </div>
+                      <div
+                        className={classNames(
+                          balance.change === "increase"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800",
+                          "inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0",
+                        )}
+                      >
+                        <ArrowUpIcon
+                          className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
+                          aria-hidden="true"
+                        />
+                        +20.1% from last month
+                      </div>
                     </p>
                   </CardContent>
                 </Card>
@@ -134,16 +167,20 @@ export default function Page() {
                   <CardContent>
                     <div className="text-2xl font-bold">+2350</div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                    <div className={classNames(
-                      balance.change === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
-                      'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0'
-                    )}>   
-                      <ArrowUpIcon
-                      className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
-                      aria-hidden="true"
-                      />
-                      +20.1% from last month
-                    </div>
+                      <div
+                        className={classNames(
+                          balance.change === "increase"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800",
+                          "inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0",
+                        )}
+                      >
+                        <ArrowUpIcon
+                          className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
+                          aria-hidden="true"
+                        />
+                        +20.1% from last month
+                      </div>
                     </p>
                   </CardContent>
                 </Card>
@@ -167,16 +204,20 @@ export default function Page() {
                   <CardContent>
                     <div className="text-2xl font-bold">+12,234</div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                    <div className={classNames(
-                      balance.change === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
-                      'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0'
-                    )}>   
-                      <ArrowUpIcon
-                      className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
-                      aria-hidden="true"
-                      />
-                      +20.1% from last month
-                    </div>
+                      <div
+                        className={classNames(
+                          balance.change === "increase"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800",
+                          "inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0",
+                        )}
+                      >
+                        <ArrowUpIcon
+                          className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
+                          aria-hidden="true"
+                        />
+                        +20.1% from last month
+                      </div>
                     </p>
                   </CardContent>
                 </Card>
@@ -201,16 +242,20 @@ export default function Page() {
                   <CardContent>
                     <div className="text-2xl font-bold">+573</div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                    <div className={classNames(
-                      balance.change === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
-                      'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0'
-                    )}>   
-                      <ArrowUpIcon
-                      className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
-                      aria-hidden="true"
-                      />
-                      +20.1% from last month
-                    </div>
+                      <div
+                        className={classNames(
+                          balance.change === "increase"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800",
+                          "inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0",
+                        )}
+                      >
+                        <ArrowUpIcon
+                          className="-ml-1 mr-0.5 h-3 w-3 flex-shrink-0 self-center text-green-500"
+                          aria-hidden="true"
+                        />
+                        +20.1% from last month
+                      </div>
                     </p>
                   </CardContent>
                 </Card>
@@ -619,5 +664,5 @@ export default function Page() {
         </div>
       </div>
     </>
-  )
+  );
 }

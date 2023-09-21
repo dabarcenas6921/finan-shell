@@ -5,11 +5,11 @@ import { z } from "zod";
 import { CountryCode, Products } from "plaid";
 
 const configuration = new Configuration({
-  basePath: PlaidEnvironments.developer, // Choose the appropriate environment
+  basePath: PlaidEnvironments.sandbox, // Choose the appropriate environment
   baseOptions: {
     headers: {
-      "PLAID-CLIENT-ID": process.env.PLAID_CLIENT_ID,
-      "PLAID-SECRET": process.env.PLAID_SECRET,
+      "PLAID-CLIENT-ID": process.env.NEXT_PUBLIC_PLAID_CLIENT_ID,
+      "PLAID-SECRET": process.env.NEXT_PUBLIC_PLAID_SECRET,
     },
   },
 });
@@ -24,13 +24,12 @@ const createLinkTokenInput = z.object({
   client_name: z.string(),
   products: z.array(z.nativeEnum(Products)),
   language: z.string(),
-  webhook: z.string(),
   redirect_uri: z.string(),
   country_codes: z.array(z.nativeEnum(CountryCode)),
 });
 
 //
-const appRouter = createTRPCRouter({
+export const plaidRouter = createTRPCRouter({
   create_link_token: publicProcedure
     .input(createLinkTokenInput)
     .mutation(async ({ input }) => {
@@ -46,4 +45,4 @@ const appRouter = createTRPCRouter({
     }),
 });
 
-export type AppRouter = typeof appRouter;
+export type AppRouter = typeof plaidRouter;

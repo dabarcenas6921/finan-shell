@@ -52,6 +52,7 @@
     "react-plaid-link": "^3.4.0",
     "react-smooth": "^2.0.4",
     "recharts": "^2.8.0",
+    "superjson": "^1.13.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.2"

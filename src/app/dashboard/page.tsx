@@ -23,30 +23,41 @@ import TeamSwitcher from "~/app/_components/dashboard/team-switcher";
 import { UserNav } from "~/app/_components/dashboard/user-nav";
 import { useUser } from "@clerk/nextjs";
 import { Products, CountryCode } from "plaid";
+import { usePlaidLink } from "react-plaid-link";
 import { api } from "~/trpc/server";
-
-async function createLinkToken() {
-  const NewRequest = {
-    user: {
-      client_user_id: "user",
-    },
-    client_name: "FinanShell",
-    products: [Products.Auth], // Use the Products enum
-    language: "en",
-    redirect_uri: "http://localhost:3000/",
-    country_codes: [CountryCode.Us], // Use the CountryCode enum
-  };
-
-  try {
-    const response = await api.plaid.create_link_token.mutate(NewRequest);
-    console.log("Link token response:", response);
-  } catch (error) {
-    console.error("Error creating link token:", error);
-  }
-}
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
+  const [publicToken, setPublicToken] = useState<string | null>(null);
+
+  async function createLinkToken() {
+    const NewRequest = {
+      user: {
+        client_user_id: "user",
+      },
+      client_name: "FinanShell",
+      products: [Products.Auth], // Use the Products enum
+      language: "en",
+      redirect_uri: "http://localhost:3000/",
+      country_codes: [CountryCode.Us], // Use the CountryCode enum
+    };
+
+    try {
+      const response = await api.plaid.create_link_token.mutate(NewRequest);
+      console.log(response);
+      setPublicToken(response.link_token);
+    } catch (error) {
+      console.error("Error creating link token:", error);
+    }
+  }
+
+  const { open, ready } = usePlaidLink({
+    token: publicToken,
+    onSuccess: (public_token, metadata) => {
+      // send public_token to server
+    },
+  });
+
   const balance = {
     change: "increase",
   };

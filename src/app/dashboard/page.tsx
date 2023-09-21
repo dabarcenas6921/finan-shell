@@ -25,14 +25,11 @@ import { useUser } from "@clerk/nextjs";
 import { Products, CountryCode } from "plaid";
 import { usePlaidLink } from "react-plaid-link";
 import { api } from "~/trpc/react";
-import { link } from "fs";
-import { headers } from "next/headers";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string>();
-  const [publicToken, setPublicToken] = useState<string>();
 
   const linkTokenMutation = api.plaid.create_link_token.useMutation({
     onSuccess: (data) => {
@@ -48,6 +45,7 @@ export default function Page() {
     onSuccess: (data) => {
       // Set the public token once the mutation is successful
       console.log("accessToken:", data.accessToken);
+      setAccessToken(data.accessToken);
     },
     onError: (error) => {
       console.error("Error creating link token:", error);
@@ -58,7 +56,6 @@ export default function Page() {
     token: linkToken,
     onSuccess: (public_token, metadata) => {
       // send public_token to server
-      setPublicToken(public_token);
       accessTokenMutation.mutate({ public_token: public_token });
     },
   });
@@ -88,6 +85,20 @@ export default function Page() {
 
     linkTokenMutation.mutate(NewRequest);
   }, []);
+
+  const { data: accountData } = api.plaid.get_accounts.useQuery(
+    { access_token: accessToken ?? "" },
+    {
+      enabled: !!accessToken, // The query will only run if accessToken exists
+    },
+  );
+
+  useEffect(() => {
+    if (accountData) {
+      console.log(accountData);
+    }
+  }, [accountData]);
+
   if (!mounted) return null;
 
   return (

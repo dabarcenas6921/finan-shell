@@ -55,12 +55,30 @@ export const plaidRouter = createTRPCRouter({
 
         const accessToken = response.data.access_token;
 
-        //Store the token in the users table
+        //Store the token in the users table (storing it in json for now)
         return { accessToken };
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to exchange public token for access token",
+        });
+      }
+    }),
+
+  get_accounts: publicProcedure
+    .input(z.object({ access_token: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        const { access_token } = input;
+        const accountsResponse = await plaidClient.accountsGet({
+          access_token,
+        });
+
+        return accountsResponse.data;
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to get accounts",
         });
       }
     }),

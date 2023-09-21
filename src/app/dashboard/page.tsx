@@ -22,19 +22,8 @@ import { RecentTransactions } from "~/app/_components/dashboard/recent-transacti
 import TeamSwitcher from "~/app/_components/dashboard/team-switcher";
 import { UserNav } from "~/app/_components/dashboard/user-nav";
 import { useUser } from "@clerk/nextjs";
-import { AppRouter } from "~/server/api/root";
-import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import SuperJSON from "superjson";
 import { Products, CountryCode } from "plaid";
-
-const trpc = createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url: "http://localhost:3000/api/trpc",
-    }),
-  ],
-  transformer: SuperJSON,
-});
+import { api } from "~/trpc/server";
 
 async function createLinkToken() {
   const NewRequest = {
@@ -49,7 +38,7 @@ async function createLinkToken() {
   };
 
   try {
-    const response = await trpc.plaid.create_link_token.mutate(NewRequest);
+    const response = await api.plaid.create_link_token.mutate(NewRequest);
     console.log("Link token response:", response);
   } catch (error) {
     console.error("Error creating link token:", error);

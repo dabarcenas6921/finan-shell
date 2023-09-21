@@ -24,32 +24,22 @@ import { UserNav } from "~/app/_components/dashboard/user-nav";
 import { useUser } from "@clerk/nextjs";
 import { Products, CountryCode } from "plaid";
 import { usePlaidLink } from "react-plaid-link";
-import { api } from "~/trpc/server";
+import { api } from "~/trpc/react";
+import { link } from "fs";
+import { headers } from "next/headers";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [publicToken, setPublicToken] = useState<string | null>(null);
-
-  async function createLinkToken() {
-    const NewRequest = {
-      user: {
-        client_user_id: "user",
-      },
-      client_name: "FinanShell",
-      products: [Products.Auth], // Use the Products enum
-      language: "en",
-      redirect_uri: "http://localhost:3000/",
-      country_codes: [CountryCode.Us], // Use the CountryCode enum
-    };
-
-    try {
-      const response = await api.plaid.create_link_token.mutate(NewRequest);
-      console.log(response);
-      setPublicToken(response.link_token);
-    } catch (error) {
+  const linkTokenMutation = api.plaid.create_link_token.useMutation({
+    onSuccess: (data) => {
+      // Set the public token once the mutation is successful
+      setPublicToken(data.link_token);
+    },
+    onError: (error) => {
       console.error("Error creating link token:", error);
-    }
-  }
+    },
+  });
 
   const { open, ready } = usePlaidLink({
     token: publicToken,
@@ -69,7 +59,19 @@ export default function Page() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
-    createLinkToken();
+
+    const NewRequest = {
+      user: {
+        client_user_id: "user",
+      },
+      client_name: "FinanShell",
+      products: [Products.Auth], // Use the Products enum
+      language: "en",
+      redirect_uri: "http://localhost:3000/",
+      country_codes: [CountryCode.Us], // Use the CountryCode enum
+    };
+
+    linkTokenMutation.mutate(NewRequest);
   }, []);
   if (!mounted) return null;
 
@@ -95,6 +97,9 @@ export default function Page() {
               <h3 className="text-2x tracking-tight">
                 Take a look at your finan-shells 🐚.
               </h3>
+              <button onClick={() => open()} disabled={!ready}>
+                Connect a bank account
+              </button>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
